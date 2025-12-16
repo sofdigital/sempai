@@ -1,0 +1,51 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+
+    <!-- NuGet package metadata -->
+    <IsPackable>true</IsPackable>
+    <PackageId>Sempai</PackageId>
+    <Version>0.1.0</Version>
+    <Authors>SofDigital</Authors>
+    <Company>SofDigital</Company>
+    <Description>Main Sempai library aggregating core features.</Description>
+    <PackageTags>sempai;framework</PackageTags>
+
+    <!-- Repo/links -->
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/sofdigital/sempai</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/sofdigital/sempai</PackageProjectUrl>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+
+    <!-- Licensing/Docs inside package -->
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <!--<PackageReadmeFile>README.md</PackageReadmeFile>-->
+
+    <!-- Symbols & Source Link -->
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <Deterministic>true</Deterministic>
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="../../LICENSE" Pack="true" PackagePath="/" />
+    <None Include="../../SUPPORT.md" Pack="true" PackagePath="/" Condition="Exists('$(MSBuildThisFileDirectory)../../SUPPORT.md')" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
+  </ItemGroup>
+
+  <!-- Add references to subpackages if the main Sempai aggregates Core/Extensions -->
+  <!-- <ItemGroup>
+    <ProjectReference Include="..\Sempai.Core\Sempai.Core.csproj" />
+    <ProjectReference Include="..\Sempai.Extensions\Sempai.Extensions.csproj" />
+  </ItemGroup> -->
+
+</Project>
