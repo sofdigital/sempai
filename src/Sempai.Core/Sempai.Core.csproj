@@ -1,47 +1,52 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
 
-    <!-- NuGet package metadata -->
-    <IsPackable>true</IsPackable>
-    <PackageId>Sempai.Core</PackageId>
-    <Version>0.1.0</Version>
-    <Authors>SofDigital</Authors>
-    <Company>SofDigital</Company>
-    <Description>Core primitives and abstractions for the Sempai ecosystem.</Description>
-    <PackageTags>sempai;core;infrastructure</PackageTags>
+        <RootNamespace>SofDigital.Sempai.Core</RootNamespace>
+        <AssemblyName>SofDigital.Sempai.Core</AssemblyName>
 
-    <!-- Repo/links -->
-    <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>https://github.com/sofdigital/sempai</RepositoryUrl>
-    <PackageProjectUrl>https://github.com/sofdigital/sempai</PackageProjectUrl>
-    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
 
-    <!-- Licensing/Docs inside package -->
-    <PackageLicenseFile>LICENSE</PackageLicenseFile>
-    <!-- You can switch to README.md later if present -->
-    <!--<PackageReadmeFile>README.md</PackageReadmeFile>-->
+        <!-- NuGet package metadata -->
+        <IsPackable>true</IsPackable>
+        <PackageId>Sempai.Core</PackageId>
+        <Version>0.1.0</Version>
+        <Authors>SofDigital</Authors>
+        <Company>SofDigital</Company>
+        <Description>Core primitives and abstractions for the Sempai ecosystem.</Description>
+        <PackageTags>sempai;core;infrastructure</PackageTags>
 
-    <!-- Symbols & Source Link -->
-    <IncludeSymbols>true</IncludeSymbols>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <EmbedUntrackedSources>true</EmbedUntrackedSources>
-    <Deterministic>true</Deterministic>
-    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-  </PropertyGroup>
+        <!-- Repo/links -->
+        <RepositoryType>git</RepositoryType>
+        <RepositoryUrl>https://github.com/sofdigital/sempai</RepositoryUrl>
+        <PackageProjectUrl>https://github.com/sofdigital/sempai</PackageProjectUrl>
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
 
-  <ItemGroup>
-    <!-- Ensure license and support files are included in the package -->
-    <None Include="../../LICENSE" Pack="true" PackagePath="/" />
-    <None Include="../../SUPPORT.md" Pack="true" PackagePath="/" Condition="Exists('$(MSBuildThisFileDirectory)../../SUPPORT.md')" />
-  </ItemGroup>
+        <!-- Licensing/Docs inside package -->
+        <PackageLicenseFile>LICENSE</PackageLicenseFile>
+        <!-- You can switch to README.md later if present -->
+        <!--<PackageReadmeFile>README.md</PackageReadmeFile>-->
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
-  </ItemGroup>
+        <!-- Symbols & Source Link -->
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <EmbedUntrackedSources>true</EmbedUntrackedSources>
+        <Deterministic>true</Deterministic>
+        <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <!-- Ensure license and support files are included in the package -->
+        <None Include="../../LICENSE" Pack="true" PackagePath="/"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.Agents.AI" Version="1.0.0-preview.251007.1"/>
+        <PackageReference Include="Microsoft.Agents.AI.Workflows" Version="1.0.0-preview.251007.1"/>
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All"/>
+    </ItemGroup>
 
 </Project>

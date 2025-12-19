@@ -1,51 +1,66 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
 
-    <!-- NuGet package metadata -->
-    <IsPackable>true</IsPackable>
-    <PackageId>Sempai</PackageId>
-    <Version>0.1.0</Version>
-    <Authors>SofDigital</Authors>
-    <Company>SofDigital</Company>
-    <Description>Main Sempai library aggregating core features.</Description>
-    <PackageTags>sempai;framework</PackageTags>
+        <RootNamespace>SofDigital.Sempai</RootNamespace>
+        <AssemblyName>SofDigital.Sempai</AssemblyName>
 
-    <!-- Repo/links -->
-    <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>https://github.com/sofdigital/sempai</RepositoryUrl>
-    <PackageProjectUrl>https://github.com/sofdigital/sempai</PackageProjectUrl>
-    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
 
-    <!-- Licensing/Docs inside package -->
-    <PackageLicenseFile>LICENSE</PackageLicenseFile>
-    <!--<PackageReadmeFile>README.md</PackageReadmeFile>-->
+        <!-- NuGet package metadata -->
+        <IsPackable>true</IsPackable>
+        <PackageId>Sempai</PackageId>
+        <Version>0.1.0</Version>
+        <Authors>SofDigital</Authors>
+        <Company>SofDigital</Company>
+        <Description>Main Sempai library aggregating core features.</Description>
+        <PackageTags>sempai;framework</PackageTags>
 
-    <!-- Symbols & Source Link -->
-    <IncludeSymbols>true</IncludeSymbols>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <EmbedUntrackedSources>true</EmbedUntrackedSources>
-    <Deterministic>true</Deterministic>
-    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-  </PropertyGroup>
+        <!-- Repo/links -->
+        <RepositoryType>git</RepositoryType>
+        <RepositoryUrl>https://github.com/sofdigital/sempai</RepositoryUrl>
+        <PackageProjectUrl>https://github.com/sofdigital/sempai</PackageProjectUrl>
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
 
-  <ItemGroup>
-    <None Include="../../LICENSE" Pack="true" PackagePath="/" />
-    <None Include="../../SUPPORT.md" Pack="true" PackagePath="/" Condition="Exists('$(MSBuildThisFileDirectory)../../SUPPORT.md')" />
-  </ItemGroup>
+        <!-- Licensing/Docs inside package -->
+        <PackageLicenseFile>LICENSE</PackageLicenseFile>
+        <!--<PackageReadmeFile>README.md</PackageReadmeFile>-->
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
-  </ItemGroup>
+        <!-- Symbols & Source Link -->
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <EmbedUntrackedSources>true</EmbedUntrackedSources>
+        <Deterministic>true</Deterministic>
+        <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    </PropertyGroup>
 
-  <!-- Add references to subpackages if the main Sempai aggregates Core/Extensions -->
-  <!-- <ItemGroup>
-    <ProjectReference Include="..\Sempai.Core\Sempai.Core.csproj" />
-    <ProjectReference Include="..\Sempai.Extensions\Sempai.Extensions.csproj" />
-  </ItemGroup> -->
+    <ItemGroup>
+        <None Include="../../LICENSE" Pack="true" PackagePath="/"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.9"/>
+        <PackageReference Include="Anthropic.SDK" Version="5.6.0"/>
+        <PackageReference Include="Azure.AI.Agents.Persistent" Version="1.2.0-beta.5"/>
+        <PackageReference Include="Azure.AI.OpenAI" Version="2.5.0-beta.1"/>
+        <PackageReference Include="Azure.Identity" Version="1.17.0"/>
+        <PackageReference Include="Google_GenerativeAI.Microsoft" Version="3.3.0"/>
+        <PackageReference Include="Microsoft.Agents.AI.AzureAI" Version="1.0.0-preview.251007.1"/>
+        <PackageReference Include="Microsoft.Agents.AI.OpenAI" Version="1.0.0-preview.251007.1"/>
+        <PackageReference Include="Microsoft.Agents.AI.Workflows" Version="1.0.0-preview.251007.1"/>
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.14.0"/>
+        <PackageReference Include="Microsoft.Extensions.AI" Version="9.9.1"/>
+        <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.9"/>
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.9"/>
+        <PackageReference Include="OllamaSharp" Version="5.4.7"/>
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Sempai.Core\Sempai.Core.csproj"/>
+    </ItemGroup>
 
 </Project>
