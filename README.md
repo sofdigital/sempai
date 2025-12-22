@@ -22,6 +22,37 @@ Add the following `PackageReference` to your `.csproj` file:
 </ItemGroup>
 ```
 
+## Example Usage
+
+```csharp
+import SofDigital.Sempai.Core;
+import SofDigital.Sempai.Agents;
+import SofDigital.Sempai.Extensions;
+
+services.AddSempai();
+
+var agentFactory = ServiceProvider.GetService<IAgentFactory>();
+var agentMessageFactory = ServiceProvider.GetService<IAgentMessageFactory();
+
+var connector = new AgentConnector(AgentProviderType.OpenAI, "<api-key>", "gpt-5.2");
+var configuration = new AgentConfiguration
+{
+    AgentName = "TimeAgent",
+    Autonomous = false,
+    Instructions = "You are a helpful assistant.",
+    MaxOutputTokens = 100,
+    Temperature = 0.7f,
+    Threaded = false,
+    Tools = [],
+    WebSearchEnabled = false
+};
+
+var agent = await agentFactory.CreateAgent<Agent>(connector, configuration);
+var message = agentMessageFactory.CreateTextMessage("What time is the current time in UTC?");
+var response = await agent!.RunAsync(message);
+
+```
+
 ## Configuration
 
 The application uses `appsettings.json` and environment variables for configuration. Ensure the following files are
@@ -52,37 +83,6 @@ You can customize these files to set up your environment. For example:
     }
   }
 }
-```
-
-## Example Usage
-
-```csharp
-import SofDigital.Sempai.Core;
-import SofDigital.Sempai.Agents;
-import SofDigital.Sempai.Extensions;
-
-services.AddSempai();
-
-var agentFactory = ServiceProvider.GetService<IAgentFactory>();
-var agentMessageFactory = ServiceProvider.GetService<IAgentMessageFactory();
-
-var connector = new AgentConnector(AgentProviderType.OpenAI, "<api-key>", "gpt-5.2");
-var configuration = new AgentConfiguration
-{
-    AgentName = "TimeAgent",
-    Autonomous = false,
-    Instructions = "You are a helpful assistant.",
-    MaxOutputTokens = 100,
-    Temperature = 0.7f,
-    Threaded = false,
-    Tools = [],
-    WebSearchEnabled = false
-};
-
-var agent = await agentFactory.CreateAgent<Agent>(connector, configuration);
-var message = agentMessageFactory.CreateTextMessage("What time is the current time in UTC?");
-var response = await agent!.RunAsync(message);
-
 ```
 
 ## NuGet Packages
