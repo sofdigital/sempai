@@ -1,11 +1,23 @@
-﻿# Sempai
+# Sempai
 
-Sempai is a modular and extensible framework for building intelligent agents in C#. 
-It provides tools and abstractions to create, configure, and run agents with various capabilities.
+Sempai is a modular SDK for building intelligent, multi-vendor AI agents in C#.  
+It provides tools and abstractions to create, configure, and run agents that can integrate with a variety of AI service providers.
 
-## Getting Started
+## 🤖 Compatible AI Vendors
 
-### Installation
+Sempai supports integration with the following AI service providers via the `AgentProviderType` enumeration:
+
+- Anthropic
+- AzureAIFoundry
+- AzureOpenAI
+- GoogleGemini
+- Ollama
+- OpenAI
+- XAI
+
+## 🚀 Getting Started
+
+### 📦 Installation
 
 To use Sempai in your project, you can reference the NuGet packages directly from GitHub.
 
@@ -22,7 +34,7 @@ Add the following `PackageReference` to your `.csproj` file:
 </ItemGroup>
 ```
 
-## Example Usage
+## 📝 Example Usage
 
 ```csharp
 import SofDigital.Sempai.Core;
@@ -53,7 +65,7 @@ var response = await agent!.RunAsync(message);
 
 ```
 
-## Configuration
+## ⚙️ Configuration
 
 The application uses `appsettings.json` and environment variables for configuration. Ensure the following files are
 present in the root directory:
@@ -85,7 +97,7 @@ You can customize these files to set up your environment. For example:
 }
 ```
 
-## NuGet Packages
+## 📦 NuGet Packages
 
 This project depends on the following NuGet packages:
 
