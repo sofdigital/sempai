@@ -1,7 +1,7 @@
 ﻿# Sempai
 
-Sempai is a modular and extensible framework for building intelligent agents. It provides tools and abstractions to
-create, configure, and run agents with various capabilities.
+Sempai is a modular and extensible framework for building intelligent agents in C#. 
+It provides tools and abstractions to create, configure, and run agents with various capabilities.
 
 ## Getting Started
 
