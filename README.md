@@ -50,13 +50,11 @@ var connector = new AgentConnector(AgentProviderType.OpenAI, "<api-key>", "gpt-5
 var configuration = new AgentConfiguration
 {
     AgentName = "TimeAgent",
-    Autonomous = false,
     Instructions = "You are a helpful assistant.",
     MaxOutputTokens = 100,
     Temperature = 0.7f,
     Threaded = false,
     Tools = [],
-    WebSearchEnabled = false
 };
 
 var agent = await agentFactory.CreateAgent<Agent>(connector, configuration);
