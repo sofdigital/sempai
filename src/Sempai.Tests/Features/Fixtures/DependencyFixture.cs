@@ -22,7 +22,7 @@ public class DependencyFixture : IDisposable
             .ConfigureAppConfiguration((context, config) =>
             {
                 config.AddJsonFile("appsettings.json", true, true);
-                config.AddJsonFile("appsettings.Development.json", true, true);
+                config.AddJsonFile("appsettings.Development.json", false, true);
                 config.AddEnvironmentVariables();
             })
             .ConfigureServices((context, serviceCollection) =>

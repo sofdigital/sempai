@@ -79,7 +79,7 @@ public class AgentFactory
             var specificTools = agent.GetTools();
             if (specificTools is not null)
             {
-                effectiveConfiguration.Tools ??= new List<AITool>();
+                effectiveConfiguration.Tools ??= [];
                 foreach (var tool in specificTools)
                     if (!effectiveConfiguration.Tools.Contains(tool))
                         effectiveConfiguration.Tools.Add(tool);
@@ -156,7 +156,9 @@ public class AgentFactory
             Tools = configuration.Tools
         });
 
-        var agent = new ChatClientAgent(client);
+        var agent = new ChatClientAgent(client,
+            configuration?.Instructions,
+            configuration?.AgentName);
 
         return new AgentCreationResult(agent, agentRunOptions);
     }
@@ -184,16 +186,18 @@ public class AgentFactory
                 configuration.AgentName,
                 instructions: configuration.Instructions);
 
-        var agentRunOptions = new ChatClientAgentRunOptions(new ChatOptions
+        var chatOptions = new ChatOptions
         {
             Instructions = configuration.Instructions,
             MaxOutputTokens = configuration.MaxOutputTokens,
             ModelId = connector.Model,
             Temperature = configuration.Temperature ?? 0.7f,
             Tools = configuration.Tools
-        });
+        };
 
-        var agent = await client.GetAIAgentAsync(aiFoundryAgent.Value.Id);
+        var agentRunOptions = new ChatClientAgentRunOptions(chatOptions);
+
+        var agent = await client.GetAIAgentAsync(aiFoundryAgent.Value.Id, chatOptions);
 
         return new AgentCreationResult(agent, agentRunOptions);
     }
@@ -224,7 +228,9 @@ public class AgentFactory
             Tools = configuration.Tools
         });
 
-        var agent = chatClient.CreateAIAgent(name: configuration.AgentName);
+        var agent = chatClient.CreateAIAgent(
+            configuration?.Instructions,
+            configuration?.AgentName);
 
         return new AgentCreationResult(agent, agentRunOptions);
     }
@@ -251,7 +257,9 @@ public class AgentFactory
             Tools = configuration.Tools
         });
 
-        var agent = new ChatClientAgent(client, name: configuration.AgentName);
+        var agent = new ChatClientAgent(client,
+            configuration?.Instructions,
+            configuration?.AgentName);
 
         return new AgentCreationResult(agent, agentRunOptions);
     }
@@ -277,7 +285,9 @@ public class AgentFactory
             Tools = configuration.Tools
         });
 
-        var agent = new ChatClientAgent(client, name: configuration.AgentName);
+        var agent = new ChatClientAgent(client,
+            configuration?.Instructions,
+            configuration?.AgentName);
 
         return new AgentCreationResult(agent, agentRunOptions);
     }
@@ -301,7 +311,9 @@ public class AgentFactory
             Tools = configuration.Tools
         });
 
-        var agent = client.GetChatClient(connector.Model).CreateAIAgent();
+        var agent = client.GetChatClient(connector.Model).CreateAIAgent(
+            configuration?.Instructions,
+            configuration?.AgentName);
 
         return new AgentCreationResult(agent, agentRunOptions);
     }
@@ -330,7 +342,9 @@ public class AgentFactory
             Tools = configuration.Tools
         });
 
-        var agent = client.GetChatClient(connector.Model).CreateAIAgent(name: configuration.AgentName);
+        var agent = client.GetChatClient(connector.Model).CreateAIAgent(
+            configuration?.Instructions,
+            configuration?.AgentName);
 
         return new AgentCreationResult(agent, agentRunOptions);
     }

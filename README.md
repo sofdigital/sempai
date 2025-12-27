@@ -1,7 +1,8 @@
 # Sempai
 
 Sempai is a modular SDK for building intelligent, multi-vendor AI agents in C#.  
-It provides tools and abstractions to create, configure, and run agents that can integrate with a variety of AI service providers.
+It provides tools and abstractions to create, configure, and run agents that can integrate with a variety of AI service
+providers.
 
 ## 🤖 Compatible AI Vendors
 
@@ -36,6 +37,8 @@ Add the following `PackageReference` to your `.csproj` file:
 
 ## 📝 Example Usage
 
+### Agent Factory Pattern
+
 ```csharp
 import SofDigital.Sempai.Core;
 import SofDigital.Sempai.Agents;
@@ -60,6 +63,61 @@ var configuration = new AgentConfiguration
 var agent = await agentFactory.CreateAgent<Agent>(connector, configuration);
 var message = agentMessageFactory.CreateTextMessage("What time is the current time in UTC?");
 var response = await agent!.RunAsync(message);
+
+```
+
+### Agent Workflow Factory Pattern
+
+- **Concurrent**: Agents each work on a task in parallel
+- **Sequential**: Agents each work on a task in an ordered pipeline
+- **Handoff**: Agents are orchestrated depending on a task
+- **Group Chat**: Agents collaborate amongst themselves on a task
+
+```csharp
+import SofDigital.Sempai.Core;
+import SofDigital.Sempai.Agents;
+import SofDigital.Sempai.Extensions;
+
+services.AddSempai();
+
+var agentFactory = ServiceProvider.GetService<IAgentFactory>();
+var agentMessageFactory = ServiceProvider.GetService<IAgentMessageFactory();
+var agentWorkflowFactory = ServiceProvider.GetService<IAgentWorkflowFactory>();
+
+var connector = new AgentConnector(AgentProviderType.OpenAI, "<api-key>", "gpt-5.2");
+var writerAgentConfiguration = new AgentConfiguration
+{
+    AgentName = "WriterAgent",
+    Instructions =
+        "You are a creative writer. Generate a catchy slogan and marketing copy. Be concise and impactful."
+};
+
+var reviewerAgentConfiguration = new AgentConfiguration
+{
+    AgentName = "ReviewerAgent",
+    Instructions =
+        "You are a copy reviewer. Evaluate slogans for clarity, impact, and brand alignment."
+};
+
+const string prompt = "Create a slogan for an eco-friendly new LLM model.";
+
+var writerAgent = await fixture.AgentFactory.CreateAgent<Agent>(defaultConnector, writerAgentConfiguration);
+var reviewerAgent = await fixture.AgentFactory.CreateAgent<Agent>(defaultConnector, reviewerAgentConfiguration);
+
+var message = fixture.AgentMessageFactory.CreateTextMessage(prompt);
+var messages = new List<ChatMessage> { message };
+
+var agentSequentialWorkflow = fixture.AgentWorkflowFactory 
+    .CreateGroupChat(3, writerAgent!, reviewerAgent!);
+
+var result = await agentSequentialWorkflow.CreateStreamAsync(messages, true);
+
+await agentSequentialWorkflow.ConsumeStreamAsync(msg =>
+{
+    Console.WriteLine(
+        "Yielded \nauthor:{AuthorName} \nrole: {Role}\nmessage: {Message}",
+        msg.AuthorName, msg.Role, msg.Contents);
+});
 
 ```
 
