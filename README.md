@@ -1,4 +1,4 @@
-﻿# Sempai
+# Sempai
 
 Sempai is a modular SDK for building intelligent, multi-vendor AI agents in C#.  
 It provides tools and abstractions to create, configure, and run agents that can integrate with a variety of AI service
