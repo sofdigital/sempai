@@ -54,6 +54,7 @@ public static class ServiceCollectionExtensions
         {
             services.AddScoped<IAgentFactory, AgentFactory>();
             services.AddSingleton<IAgentMessageFactory, AgentMessageFactory>();
+            services.AddScoped<IAgentWorkflowFactory, AgentWorkflowFactory>();
 
             services.AddScoped<HttpClient>();
 
