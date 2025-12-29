@@ -11,9 +11,15 @@ Sempai supports integration with the following AI service providers via the `Age
 - Anthropic
 - AzureAIFoundry
 - AzureOpenAI
+- AwsBedrock
+- GithubModels
 - GoogleGemini
+- Groq
+- Huggingface
+- Mistral
 - Ollama
 - OpenAI
+- OpenRouter
 - XAI
 
 ## 🚀 Getting Started
