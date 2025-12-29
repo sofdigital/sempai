@@ -2,6 +2,7 @@
 // Sof Digital Corporation 2025
 // Written By Michael Rinderle <michael@sofdigital.net>
 
+using System.Runtime.CompilerServices;
 using System.Text.Json;
 using Microsoft.Agents.AI;
 using Microsoft.Extensions.AI;
@@ -61,6 +62,18 @@ public abstract class AgentBase
     public ChatClientAgentRunOptions AgentRunOptions { get; set; }
 
     /// <inheritdoc />
+    public event Action<AgentTokenUsageResult>? OnTokenUsageUpdated;
+
+    /// <inheritdoc />
+    public long TokenCountInput { get; set; }
+
+    /// <inheritdoc />
+    public long TokenCountOutput { get; set; }
+
+    /// <inheritdoc />
+    public long TokenCountReasoning { get; set; }
+
+    /// <inheritdoc />
     public void Configure(AgentConfiguration configuration)
     {
         AgentConfiguration = configuration;
@@ -112,7 +125,7 @@ public abstract class AgentBase
     }
 
     /// <inheritdoc />
-    public virtual Task<AgentRunResponse> RunAsync(
+    public virtual async Task<AgentRunResponse> RunAsync(
         AgentThread? thread = null,
         AgentRunOptions? options = null,
         CancellationToken cancellationToken = default)
@@ -122,11 +135,15 @@ public abstract class AgentBase
         var runThread = thread ?? AgentThread;
         var runOptions = options ?? AgentRunOptions;
 
-        return ChatClientAgent.RunAsync(runThread, runOptions, cancellationToken);
+        var response = await ChatClientAgent.RunAsync(runThread, runOptions, cancellationToken);
+
+        OnTokenUsageAvailable(response.Usage);
+
+        return response;
     }
 
     /// <inheritdoc />
-    public virtual Task<AgentRunResponse> RunAsync(
+    public virtual async Task<AgentRunResponse> RunAsync(
         string message,
         AgentThread? thread = null,
         AgentRunOptions? options = null,
@@ -137,11 +154,15 @@ public abstract class AgentBase
         var runThread = thread ?? AgentThread;
         var runOptions = options ?? AgentRunOptions;
 
-        return ChatClientAgent.RunAsync(message, runThread, runOptions, cancellationToken);
+        var response = await ChatClientAgent.RunAsync(message, runThread, runOptions, cancellationToken);
+
+        OnTokenUsageAvailable(response.Usage);
+
+        return response;
     }
 
     /// <inheritdoc />
-    public virtual Task<AgentRunResponse> RunAsync(
+    public virtual async Task<AgentRunResponse> RunAsync(
         ChatMessage message,
         AgentThread? thread = null,
         AgentRunOptions? options = null,
@@ -152,11 +173,13 @@ public abstract class AgentBase
         var runOptions = options ?? AgentRunOptions;
         var runThread = thread ?? AgentThread;
 
-        return ChatClientAgent.RunAsync(message, runThread, runOptions, cancellationToken);
+        var response = await ChatClientAgent.RunAsync(message, runThread, runOptions, cancellationToken);
+
+        return await RunWithUsageAsync(response);
     }
 
     /// <inheritdoc />
-    public virtual Task<AgentRunResponse> RunAsync(
+    public virtual async Task<AgentRunResponse> RunAsync(
         IEnumerable<ChatMessage> messages,
         AgentThread? thread = null,
         AgentRunOptions? options = null,
@@ -167,11 +190,13 @@ public abstract class AgentBase
         var runThread = thread ?? AgentThread;
         var runOptions = options ?? AgentRunOptions;
 
-        return ChatClientAgent.RunAsync(messages, runThread, runOptions, cancellationToken);
+        var response = await ChatClientAgent.RunAsync(messages, runThread, runOptions, cancellationToken);
+
+        return await RunWithUsageAsync(response);
     }
 
     /// <inheritdoc />
-    public virtual Task<ChatClientAgentRunResponse<T>> RunAsync<T>(
+    public virtual async Task<AgentRunResponse<T>> RunAsync<T>(
         AgentThread? thread = null,
         JsonSerializerOptions? serializerOptions = null,
         AgentRunOptions? options = null,
@@ -183,12 +208,14 @@ public abstract class AgentBase
         var runThread = thread ?? AgentThread;
         var runOptions = options ?? AgentRunOptions;
 
-        return ChatClientAgent.RunAsync<T>(runThread, serializerOptions, runOptions,
+        var response = await ChatClientAgent.RunAsync<T>(runThread, serializerOptions, runOptions,
             useJsonSchemaResponseFormat, CancellationToken.None);
+
+        return await RunWithUsageAsync(response);
     }
 
     /// <inheritdoc />
-    public virtual Task<ChatClientAgentRunResponse<T>> RunAsync<T>(
+    public virtual async Task<AgentRunResponse<T>> RunAsync<T>(
         string message,
         AgentThread? thread = null,
         JsonSerializerOptions? serializerOptions = null,
@@ -201,12 +228,14 @@ public abstract class AgentBase
         var runThread = thread ?? AgentThread;
         var runOptions = options ?? AgentRunOptions;
 
-        return ChatClientAgent.RunAsync<T>(message, runThread, serializerOptions,
+        var response = await ChatClientAgent.RunAsync<T>(message, runThread, serializerOptions,
             runOptions, useJsonSchemaResponseFormat, cancellationToken);
+
+        return await RunWithUsageAsync(response);
     }
 
     /// <inheritdoc />
-    public virtual Task<ChatClientAgentRunResponse<T>> RunAsync<T>(
+    public virtual async Task<AgentRunResponse<T>> RunAsync<T>(
         ChatMessage message,
         AgentThread? thread = null,
         JsonSerializerOptions? serializerOptions = null,
@@ -219,12 +248,14 @@ public abstract class AgentBase
         var runThread = thread ?? AgentThread;
         var runOptions = options ?? AgentRunOptions;
 
-        return ChatClientAgent.RunAsync<T>(message, runThread, serializerOptions,
+        var response = await ChatClientAgent.RunAsync<T>(message, runThread, serializerOptions,
             runOptions, useJsonSchemaResponseFormat, cancellationToken);
+
+        return await RunWithUsageAsync(response);
     }
 
     /// <inheritdoc />
-    public virtual Task<ChatClientAgentRunResponse<T>> RunAsync<T>(
+    public virtual async Task<AgentRunResponse<T>> RunAsync<T>(
         IEnumerable<ChatMessage> messages,
         AgentThread? thread = null,
         JsonSerializerOptions? serializerOptions = null,
@@ -237,8 +268,10 @@ public abstract class AgentBase
         var runThread = thread ?? AgentThread;
         var runOptions = options ?? AgentRunOptions;
 
-        return ChatClientAgent.RunAsync<T>(messages, runThread, serializerOptions,
+        var response = await ChatClientAgent.RunAsync<T>(messages, runThread, serializerOptions,
             runOptions, useJsonSchemaResponseFormat, cancellationToken);
+
+        return await RunWithUsageAsync(response);
     }
 
     /// <inheritdoc />
@@ -252,7 +285,9 @@ public abstract class AgentBase
         var runThread = thread ?? AgentThread;
         var runOptions = options ?? AgentRunOptions;
 
-        return ChatClientAgent.RunStreamingAsync(runThread, runOptions, cancellationToken);
+        var stream = ChatClientAgent.RunStreamingAsync(runThread, runOptions, cancellationToken);
+
+        return RunStreamingWithUsageAsync(stream, cancellationToken);
     }
 
     /// <inheritdoc />
@@ -267,7 +302,9 @@ public abstract class AgentBase
         var runThread = thread ?? AgentThread;
         var runOptions = options ?? AgentRunOptions;
 
-        return ChatClientAgent.RunStreamingAsync(message, runThread, runOptions, cancellationToken);
+        var stream = ChatClientAgent.RunStreamingAsync(message, runThread, runOptions, cancellationToken);
+
+        return RunStreamingWithUsageAsync(stream, cancellationToken);
     }
 
     /// <inheritdoc />
@@ -282,7 +319,9 @@ public abstract class AgentBase
         var runThread = thread ?? AgentThread;
         var runOptions = options ?? AgentRunOptions;
 
-        return ChatClientAgent.RunStreamingAsync(message, runThread, runOptions, cancellationToken);
+        var stream = ChatClientAgent.RunStreamingAsync(message, runThread, runOptions, cancellationToken);
+
+        return RunStreamingWithUsageAsync(stream, cancellationToken);
     }
 
     /// <inheritdoc />
@@ -297,6 +336,111 @@ public abstract class AgentBase
         var runThread = thread ?? AgentThread;
         var runOptions = options ?? AgentRunOptions;
 
-        return ChatClientAgent.RunStreamingAsync(messages, runThread, runOptions, cancellationToken);
+        var stream = ChatClientAgent.RunStreamingAsync(messages, runThread, runOptions, cancellationToken);
+
+        return RunStreamingWithUsageAsync(stream, cancellationToken);
+    }
+
+    /// <summary>
+    ///     Updates token usage details based on the provided usage information and triggers the
+    ///     <see cref="OnTokenUsageUpdated" /> event.
+    /// </summary>
+    /// <param name="result">
+    ///     The usage details containing input, output, and any additional token count information.
+    ///     If <paramref name="result" /> is null, no action is taken.
+    /// </param>
+    private void OnTokenUsageAvailable(UsageDetails? result)
+    {
+        if (result is null) return;
+
+        var inputTokenCount = result.InputTokenCount ?? 0;
+        var outputTokenCount = result.OutputTokenCount ?? 0;
+        long reasoningCount = 0;
+
+        var reasoning = result
+            .AdditionalCounts?.TryGetValue("OutputTokenDetails.ReasoningTokenCount", out reasoningCount);
+
+        TokenCountInput += inputTokenCount;
+        TokenCountOutput += outputTokenCount;
+
+        if (reasoning.HasValue && reasoning.Value) TokenCountReasoning += reasoningCount!;
+
+        var usage = new AgentTokenUsageResult(
+            inputTokenCount,
+            outputTokenCount,
+            reasoningCount,
+            TokenCountInput,
+            TokenCountOutput,
+            TokenCountReasoning);
+
+        OnTokenUsageUpdated?.Invoke(usage);
+    }
+
+    private async IAsyncEnumerable<AgentRunResponseUpdate> RunStreamingWithUsageAsync(
+        IAsyncEnumerable<AgentRunResponseUpdate> stream,
+        [EnumeratorCancellation] CancellationToken cancellationToken)
+    {
+        var updates = new List<AgentRunResponseUpdate>();
+
+        await foreach (var update in stream.WithCancellation(cancellationToken).ConfigureAwait(false))
+        {
+            updates.Add(update);
+            yield return update;
+        }
+
+        if (updates.Count <= 0) yield break;
+
+        var response = await ToAsyncEnumerable(updates)
+            .ToAgentRunResponseAsync(cancellationToken)
+            .ConfigureAwait(false);
+
+        OnTokenUsageAvailable(response.Usage);
+    }
+
+    /// <summary>
+    ///     Updates the token usage details based on the provided response and returns the response asynchronously.
+    /// </summary>
+    /// <param name="response">
+    ///     The agent response containing the token usage data to be tracked.
+    /// </param>
+    /// <returns>
+    ///     A task that represents the asynchronous operation, returning the original <see cref="AgentRunResponse" />.
+    /// </returns>
+    private Task<AgentRunResponse> RunWithUsageAsync(AgentRunResponse response)
+    {
+        OnTokenUsageAvailable(response.Usage);
+
+        return Task.FromResult(response);
+    }
+
+    /// <summary>
+    ///     Processes the provided <paramref name="response" /> to collect usage details
+    ///     and returns the processed response.
+    /// </summary>
+    /// <typeparam name="T">The type of the response content.</typeparam>
+    /// <param name="response">The response to be processed and returned.</param>
+    /// <returns>
+    ///     A task representing the asynchronous operation, with the resulting
+    ///     <see cref="AgentRunResponse{T}" /> containing the processed response.
+    /// </returns>
+    private Task<AgentRunResponse<T>> RunWithUsageAsync<T>(AgentRunResponse<T> response)
+    {
+        OnTokenUsageAvailable(response.Usage);
+
+        return Task.FromResult(response);
+    }
+
+    /// <summary>
+    ///     Converts a specified <see cref="IEnumerable{T}" /> to an <see cref="IAsyncEnumerable{T}" />.
+    /// </summary>
+    /// <typeparam name="T">The type of elements in the enumerable.</typeparam>
+    /// <param name="items">The collection of items to be converted to an asynchronous enumerable.</param>
+    /// <returns>An <see cref="IAsyncEnumerable{T}" /> that represents the asynchronous sequence of the provided items.</returns>
+    private static async IAsyncEnumerable<T> ToAsyncEnumerable<T>(IEnumerable<T> items)
+    {
+        await Task.Yield();
+
+        foreach (var item in items)
+            yield return item;
     }
 }

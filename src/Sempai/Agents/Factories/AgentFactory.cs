@@ -116,6 +116,12 @@ public class AgentFactory
         return null;
     }
 
+    /// <inheritdoc />
+    public AIFunction CreateFunction(Delegate method, string name, string description)
+    {
+        return AIFunctionFactory.Create(method, name, description);
+    }
+
     /// <summary>
     ///     Applies strongly typed parameters to the agent if it implements <see cref="IAgentParameterConsumer{TParameters}" />
     /// </summary>
