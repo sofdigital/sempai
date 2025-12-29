@@ -2,6 +2,8 @@
 // Sof Digital Corporation 2025
 // Written By Michael Rinderle <michael@sofdigital.net>
 
+using Microsoft.Extensions.AI;
+
 namespace SofDigital.Sempai.Core.Agents;
 
 /// <summary>
@@ -26,4 +28,16 @@ public interface IAgentFactory
     /// </returns>
     public Task<T?> CreateAgent<T>(AgentConnector? connector = null, AgentConfiguration? configuration = null)
         where T : AgentBase, IAgent;
+
+    /// <summary>
+    ///     Creates and initializes a new function instance with the specified parameters.
+    /// </summary>
+    /// <param name="method"></param>
+    /// <param name="name"></param>
+    /// <param name="description"></param>
+    /// <returns>
+    ///     A task that represents the asynchronous creation of the function. The result contains the initialized function
+    ///     instance, or null if creation fails.
+    /// </returns>
+    public AIFunction CreateFunction(Delegate method, string name, string description);
 }

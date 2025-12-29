@@ -67,6 +67,26 @@ public interface IAgent
     ChatClientAgentRunOptions AgentRunOptions { get; set; }
 
     /// <summary>
+    ///     Gets or sets the input token count used by the agent during processing.
+    /// </summary>
+    public long TokenCountInput { get; set; }
+
+    /// <summary>
+    ///     Gets or sets the count of tokens generated as output by the agent.
+    /// </summary>
+    public long TokenCountOutput { get; set; }
+
+    /// <summary>
+    ///     Gets or sets the token count dedicated to reasoning processes within the agent's operations.
+    /// </summary>
+    public long TokenCountReasoning { get; set; }
+
+    /// <summary>
+    ///     Event triggered when updates occur to token usage metrics, including input, output, or reasoning token counts.
+    /// </summary>
+    public event Action<AgentTokenUsageResult>? OnTokenUsageUpdated;
+
+    /// <summary>
     ///     Configures the agent instance with a backing <see cref="ChatClientAgent" />, its
     ///     <see cref="Agents.AgentConfiguration" />, and optional default <see cref="Microsoft.Agents.AI.AgentRunOptions" />.
     /// </summary>
@@ -206,7 +226,7 @@ public interface IAgent
     /// <param name="cancellationToken">Token to observe cancellation.</param>
     /// <returns>The final <see cref="ChatClientAgentRunResponse{T}" /> containing the deserialized result.</returns>
     /// <exception cref="InvalidOperationException">Thrown when <see cref="ChatClientAgent" /> is not configured.</exception>
-    Task<ChatClientAgentRunResponse<T>> RunAsync<T>(
+    Task<AgentRunResponse<T>> RunAsync<T>(
         AgentThread? thread = null,
         JsonSerializerOptions? serializerOptions = null,
         AgentRunOptions? options = null,
@@ -226,7 +246,7 @@ public interface IAgent
     /// <param name="cancellationToken">Token to observe cancellation.</param>
     /// <returns>The final <see cref="ChatClientAgentRunResponse{T}" /> containing the deserialized result.</returns>
     /// <exception cref="InvalidOperationException">Thrown when <see cref="ChatClientAgent" /> is not configured.</exception>
-    Task<ChatClientAgentRunResponse<T>> RunAsync<T>(
+    Task<AgentRunResponse<T>> RunAsync<T>(
         string message,
         AgentThread? thread = null,
         JsonSerializerOptions? serializerOptions = null,
@@ -247,7 +267,7 @@ public interface IAgent
     /// <param name="cancellationToken">Token to observe cancellation.</param>
     /// <returns>The final <see cref="ChatClientAgentRunResponse{T}" /> containing the deserialized result.</returns>
     /// <exception cref="InvalidOperationException">Thrown when <see cref="ChatClientAgent" /> is not configured.</exception>
-    Task<ChatClientAgentRunResponse<T>> RunAsync<T>(
+    Task<AgentRunResponse<T>> RunAsync<T>(
         ChatMessage message,
         AgentThread? thread = null,
         JsonSerializerOptions? serializerOptions = null,
@@ -268,7 +288,7 @@ public interface IAgent
     /// <param name="cancellationToken">Token to observe cancellation.</param>
     /// <returns>The final <see cref="ChatClientAgentRunResponse{T}" /> containing the deserialized result.</returns>
     /// <exception cref="InvalidOperationException">Thrown when <see cref="ChatClientAgent" /> is not configured.</exception>
-    Task<ChatClientAgentRunResponse<T>> RunAsync<T>(
+    Task<AgentRunResponse<T>> RunAsync<T>(
         IEnumerable<ChatMessage> messages,
         AgentThread? thread = null,
         JsonSerializerOptions? serializerOptions = null,
