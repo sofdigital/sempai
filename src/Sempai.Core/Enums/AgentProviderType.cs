@@ -23,7 +23,6 @@ public enum AgentProviderType
     ///     which may involve applications of AI safety and machine learning capabilities.
     /// </remarks>
     Anthropic,
-
     /// <summary>
     ///     Represents the Azure AI Foundry service provider.
     /// </summary>
@@ -33,7 +32,6 @@ public enum AgentProviderType
     ///     enabling integration with Azure's ecosystem of advanced AI solutions.
     /// </remarks>
     AzureAIFoundry,
-
     /// <summary>
     ///     Represents the Azure OpenAI service provider.
     /// </summary>
@@ -43,7 +41,24 @@ public enum AgentProviderType
     ///     enabling secure and scalable AI applications tailored for enterprise environments.
     /// </remarks>
     AzureOpenAI,
-
+    /// <summary>
+    /// Represents the AWS Bedrock AI service provider.
+    /// </summary>
+    /// <remarks>
+    /// AWS Bedrock is a cloud-based AI service from Amazon Web Services that provides access to foundational models.
+    /// This enumeration value is used to configure interactions with AWS Bedrock's services,
+    /// enabling the integration of machine learning capabilities in supported applications.
+    /// </remarks>
+    AwsBedrock,
+    /// <summary>
+    /// Represents the GitHub Models service provider.
+    /// </summary>
+    /// <remarks>
+    /// GitHub Models refers to AI-driven tools and services provided by GitHub,
+    /// which may include advanced code generation, analysis, and repository-related capabilities.
+    /// This enumeration value is used to configure interactions with GitHub's AI-powered solutions.
+    /// </remarks>
+    GithubModels,
     /// <summary>
     ///     Represents the Google Gemini AI service provider.
     /// </summary>
@@ -53,7 +68,34 @@ public enum AgentProviderType
     ///     enabling the utilization of its machine learning models and APIs for agent-based systems.
     /// </remarks>
     GoogleGemini,
-
+    /// <summary>
+    /// Represents the Groq AI service provider.
+    /// </summary>
+    /// <remarks>
+    /// Groq focuses on delivering high-performance artificial intelligence solutions
+    /// powered by its innovative chip architecture and optimized AI inference capabilities.
+    /// This enumeration value is used to configure interactions with Groq's services
+    /// for advanced AI computation and processing needs.
+    /// </remarks>
+    Groq,
+    /// <summary>
+    /// Represents the Huggingface AI service provider.
+    /// </summary>
+    /// <remarks>
+    /// Huggingface is a platform and community that provides tools, libraries,
+    /// and models for natural language processing and other machine learning applications.
+    /// This enumeration value is used to configure integrations leveraging Huggingface's services.
+    /// </remarks>
+    Huggingface,
+    /// <summary>
+    /// Represents the Mistral service provider.
+    /// </summary>
+    /// <remarks>
+    /// Mistral is an AI technology company that focuses on building large language models and advanced AI systems.
+    /// This enumeration value is used to configure interactions with Mistral's services, enabling integration
+    /// with its innovative AI capabilities for various applications.
+    /// </remarks>
+    Mistral,
     /// <summary>
     ///     Represents the Ollama AI service provider.
     /// </summary>
@@ -63,7 +105,6 @@ public enum AgentProviderType
     ///     advanced AI capabilities for agent-focused solutions.
     /// </remarks>
     Ollama,
-
     /// <summary>
     ///     Represents the OpenAI service provider.
     /// </summary>
@@ -74,7 +115,15 @@ public enum AgentProviderType
     ///     supporting a range of features such as conversational agents, text completion, and more.
     /// </remarks>
     OpenAI,
-
+    /// <summary>
+    /// Represents the OpenRouter AI service provider.
+    /// </summary>
+    /// <remarks>
+    /// OpenRouter is used to facilitate integrations with various AI platforms and models.
+    /// This enumeration value is designated for configurations that involve OpenRouter-based services,
+    /// enabling streamlined communication with multiple AI systems.
+    /// </remarks>
+    OpenRouter,
     /// <summary>
     ///     Represents the XAI service provider.
     /// </summary>

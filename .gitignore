@@ -485,3 +485,4 @@ $RECYCLE.BIN/
 
 # Ignore all .Development.json files
 *.Development.json
+/src/.output.txt

@@ -38,6 +38,7 @@ public static class ServiceCollectionExtensions
         public IServiceCollection AddAgents()
         {
             services.AddTransient<Agent>();
+            services.AddTransient<ConfigurableAgent>();
 
             return services;
         }
